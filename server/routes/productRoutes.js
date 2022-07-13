@@ -5,9 +5,11 @@ const router = express.Router()
 const {
   getProducts,
   createProduct,
+  getProduct,
 } = require("../controllers/productController")
 
 router.get("/", getProducts)
+router.get("/:slug", getProduct)
 router.post("/", createProduct)
 
 module.exports = router

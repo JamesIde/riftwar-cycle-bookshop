@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { loginUser } from "../features/User/userSlice"
 import { useNavigate } from "react-router-dom"
-import Spinner from "./Spinner"
+import Spinner from "../Components/Spinner"
 
 function Login() {
   const [email, setEmail] = useState("")

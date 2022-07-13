@@ -38,6 +38,13 @@ const userSlice = createSlice({
       state.isSuccess = false
       state.message = action.payload
     })
+    builder.addCase(logoutUser.fulfilled, state => {
+      state.user = null
+      state.isLoading = false
+      state.isError = false
+      state.isSuccess = true
+      state.message = "Logout successful"
+    })
   },
 })
 
@@ -54,5 +61,9 @@ export const loginUser = createAsyncThunk(
     }
   }
 )
+
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+  localStorage.removeItem("user")
+})
 
 export default userSlice.reducer

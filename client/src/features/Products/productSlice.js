@@ -40,6 +40,30 @@ const productSlice = createSlice({
       // Add to local storage
       localStorage.setItem("cart", JSON.stringify(state.cart))
     },
+    removeFromCart: (state, action) => {
+      state.cart = state.cart.filter(item => item._id !== action.payload)
+      localStorage.setItem("cart", JSON.stringify(state.cart))
+    },
+    decrementQuantity: (state, action) => {
+      // Find the item in the array and decrement the quantity
+      const itemIndex = state.cart.findIndex(
+        item => item._id === action.payload
+      )
+      if (state.cart[itemIndex].quantity > 1) {
+        state.cart[itemIndex].quantity--
+      } else {
+        state.cart.splice(itemIndex, 1)
+      }
+      localStorage.setItem("cart", JSON.stringify(state.cart))
+    },
+    incrementQuantity: (state, action) => {
+      // Find the item in the array and increment the quantity
+      const itemIndex = state.cart.findIndex(
+        item => item._id === action.payload
+      )
+      state.cart[itemIndex].quantity++
+      localStorage.setItem("cart", JSON.stringify(state.cart))
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchProducts.pending, state => {
@@ -80,7 +104,31 @@ const productSlice = createSlice({
       state.isSuccess = false
       state.message = action.payload
     })
+    builder.addCase(getCart.pending, state => {
+      state.isLoading = true
+      state.isError = false
+      state.isSuccess = false
+      state.message = ""
+    })
+    builder.addCase(getCart.fulfilled, (state, action) => {
+      state.cart = action.payload
+      state.isLoading = false
+      state.isError = false
+      state.isSuccess = true
+      state.message = "Cart fetched!"
+    })
+    builder.addCase(getCart.rejected, (state, action) => {
+      state.isLoading = false
+      state.isError = true
+      state.isSuccess = false
+      state.message = action.payload
+    })
   },
+})
+
+export const getCart = createAsyncThunk("product/getCart", async () => {
+  const cart = JSON.parse(localStorage.getItem("cart"))
+  return cart
 })
 
 export const fetchProducts = createAsyncThunk(
@@ -107,5 +155,10 @@ export const fetchProduct = createAsyncThunk(
     }
   }
 )
-export const { addtoCart } = productSlice.actions
+export const {
+  addtoCart,
+  removeFromCart,
+  decrementQuantity,
+  incrementQuantity,
+} = productSlice.actions
 export default productSlice.reducer

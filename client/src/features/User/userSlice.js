@@ -62,8 +62,10 @@ export const loginUser = createAsyncThunk(
   }
 )
 
-export const logoutUser = createAsyncThunk("auth/logout", async () => {
+export const logoutUser = createAsyncThunk("auth/logout", async thunkAPI => {
   localStorage.removeItem("user")
+  localStorage.removeItem("cart")
+  // Get product cart
 })
 
 export default userSlice.reducer

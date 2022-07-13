@@ -22,14 +22,13 @@ function CartItem({ product }) {
 
   const increaseCartQuantity = productId => {
     dispatch(incrementQuantity(productId))
-    // dispatch(getCart())
   }
 
   const decreaseCartQuantity = productId => {
-    if (product.quantity === 1) {
-      window.confirm(
-        "Are you sure? Doing this will remove the item from your cart."
-      )
+    if (
+      product.quantity == 1 &&
+      window.confirm("Are you sure you want to remove this item?")
+    ) {
       dispatch(decrementQuantity(productId))
     } else {
       dispatch(decrementQuantity(productId))
@@ -68,12 +67,16 @@ function CartItem({ product }) {
                         +
                       </div>
                       <div className="p-1">{product.quantity}</div>
-                      <div
-                        className="p-1 hover:cursor-pointer"
-                        onClick={() => decreaseCartQuantity(product._id)}
-                      >
-                        -
-                      </div>
+                      {product.quantity == 1 ? (
+                        <></>
+                      ) : (
+                        <div
+                          className="p-1 hover:cursor-pointer"
+                          onClick={() => decreaseCartQuantity(product._id)}
+                        >
+                          -
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div class="flex">
@@ -84,7 +87,7 @@ function CartItem({ product }) {
                         removeItemFromCart(product._id)
                       }}
                     >
-                      Remove
+                      Remove Item
                     </button>
                   </div>
                 </div>

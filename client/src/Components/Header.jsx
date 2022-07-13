@@ -19,7 +19,7 @@ function Header() {
         <div className="">
           <Link to="/">
             <h1 className="text-center font-bold text-2xl mt-4 mb-4">
-              The Riftwar Saga Bookshop
+              Crydee Bookstore
             </h1>
           </Link>
         </div>
@@ -51,7 +51,7 @@ function Header() {
             </>
           )}
           <Link to="/cart">
-            <div className="inline-flex mt-1 ml-2">
+            <div className="inline-flex mt-[6px] ml-2">
               <AiOutlineShoppingCart className="mt-2" />
               <p className="pl-1 mt-[3px]">({cart.length})</p>
             </div>

@@ -3,13 +3,15 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchProduct, addtoCart } from "../features/Products/productSlice"
 import Spinner from "../Components/Spinner"
-import ProductItem from "../Components/ProductItem"
+import { useNavigate } from "react-router-dom"
 function Product() {
   const slug = useParams().slug
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { product, isLoading, isSuccess, isError, message } = useSelector(
     state => state.productReducer
   )
+  const { user } = useSelector(state => state.userReducer)
   useEffect(() => {
     dispatch(fetchProduct(slug))
   }, [])
@@ -19,7 +21,12 @@ function Product() {
   }
 
   const addItemToCart = productId => {
-    dispatch(addtoCart(productId))
+    // Check if there is a user, navigate to login if not
+    if (!user) {
+      navigate("/login")
+    } else {
+      dispatch(addtoCart(productId))
+    }
   }
 
   return (

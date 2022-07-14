@@ -159,6 +159,7 @@ export const fetchProduct = createAsyncThunk(
     }
   }
 )
+
 export const {
   addtoCart,
   removeFromCart,

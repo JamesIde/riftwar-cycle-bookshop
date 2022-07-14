@@ -64,6 +64,10 @@ const productSlice = createSlice({
       state.cart[itemIndex].quantity++
       localStorage.setItem("cart", JSON.stringify(state.cart))
     },
+    clearCart: (state, action) => {
+      state.cart = []
+      localStorage.removeItem("cart")
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchProducts.pending, state => {
@@ -160,5 +164,6 @@ export const {
   removeFromCart,
   decrementQuantity,
   incrementQuantity,
+  clearCart,
 } = productSlice.actions
 export default productSlice.reducer

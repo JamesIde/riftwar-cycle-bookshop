@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../features/User/userSlice"
+import { clearCart } from "../features/Products/productSlice"
 import { AiOutlineShoppingCart } from "react-icons/ai"
 import Spinner from "./Spinner"
 
@@ -11,6 +12,7 @@ function Header() {
   const { cart } = useSelector(state => state.productReducer)
   const handleClick = () => {
     dispatch(logoutUser())
+    dispatch(clearCart())
   }
 
   return (

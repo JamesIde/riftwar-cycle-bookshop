@@ -37,22 +37,36 @@ function Cart() {
           </p>
         </>
       )}
-      <div className="w-[50%] mx-auto mt-12 ">
-        <div className="flex justify-end">
-          <p className="text-right pr-2 font-bold">Total Cost (AUD): </p>
-          <p className="text-right"> ${calculateTotalCost().toFixed(2)}</p>
-        </div>
-        <div className="flex justify-between">
+      {cart.length > 0 ? (
+        <>
+          <div className="w-[50%] mx-auto mt-12 ">
+            <div className="flex justify-end">
+              <p className="text-right pr-2 font-bold">Total Cost (AUD): </p>
+              <p className="text-right"> ${calculateTotalCost().toFixed(2)}</p>
+            </div>
+            <div className="flex justify-between">
+              <Link to="/">
+                <p className="text-left  p-2 text-indigo-600 hover:text-indigo-500 font-medium hover:cursor-pointer">
+                  Continue Shopping
+                </p>
+              </Link>
+              <Link to="/checkout">
+                <p className="p-2 rounded bg-indigo-700 text-white w-max ml-auto mt-2 mb-2 hover:cursor">
+                  Proceed to Checkout
+                </p>
+              </Link>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
           <Link to="/">
-            <p className="text-left  p-2 text-indigo-600 hover:text-indigo-500 font-medium hover:cursor-pointer">
+            <p className="text-center  p-2 text-indigo-600 hover:text-indigo-500 font-medium hover:cursor-pointer">
               Continue Shopping
             </p>
           </Link>
-          <p className="p-2 rounded bg-indigo-700 text-white w-max ml-auto mt-2 mb-2">
-            Proceed to Checkout
-          </p>
-        </div>
-      </div>
+        </>
+      )}
     </>
   )
 }

@@ -87,7 +87,7 @@ function CartItem({ product }) {
                         removeItemFromCart(product._id)
                       }}
                     >
-                      Remove Item
+                      Remove
                     </button>
                   </div>
                 </div>

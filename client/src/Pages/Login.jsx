@@ -62,16 +62,13 @@ function Login() {
                 />
               </div>
               <div>
-                <button class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900 w-full">
-                  Login
-                </button>
-                <p className="text-center text-sm mt-2 mb-2">
+                <button class="btn w-full btn-primary mt-3 mb-2">LOGIN</button>
+
+                <p className="text-center text-sm mt-1 mb-2">
                   Create an account
                 </p>
                 <Link to="/register">
-                  <button class="px-6 py-2  border-[1px] border-black hover:bg-gray-100 rounded-lg  w-full">
-                    Register
-                  </button>
+                  <button class="btn btn-outline w-full">Register</button>
                 </Link>
               </div>
             </div>

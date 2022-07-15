@@ -18,12 +18,7 @@ function Home() {
 
   return (
     <div className="xl:w-8/12 mx-auto">
-      <h1 className="text-2xl text-center mt-4 mb-1">
-        Latest by Raymond E Feist
-      </h1>
-      <hr className="w-3/12 mx-auto" />
-
-      <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mx-auto mt-4">
+      <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 grid-cols-1 mx-auto mt-4 gap-14">
         {products.map(product => {
           return <ProductItem product={product} key={product._id} />
         })}

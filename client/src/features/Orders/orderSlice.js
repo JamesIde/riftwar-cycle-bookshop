@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const API_URL = "/api/orders"
-
+const STRIPE_API_URL = "/api/stripe"
 const initialState = {
   order: {},
   isLoading: false,
@@ -42,16 +42,28 @@ export const createOrder = createAsyncThunk(
   "order/create",
   async (orderData, thunkAPI) => {
     try {
-      // Get user token
       const token = thunkAPI.getState().userReducer.user.token
-      const response = await axios.post(API_URL, orderData, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      return response.data
-      // const response = await axios.post(API_URL, orderData)
+      const response = await axios.post(
+        `${STRIPE_API_URL}/create-checkout-session`,
+        orderData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      // If the response contains the URL returned from the session, redirect the user to that URL. This is where the user enters their payment information.
+      if (response.data.url) {
+        // Push user to session
+        window.location.href = response.data.url
+        console.log(response.data)
+      } else {
+        console.log(response.data)
+      }
+      return response.data.sessionId
     } catch (error) {
       thunkAPI.rejectWithValue(error.message)
+      console.log(error)
     }
   }
 )
+
 export default orderSlice.reducer

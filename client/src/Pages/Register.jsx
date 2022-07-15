@@ -44,16 +44,15 @@ function Register() {
                 />
               </div>
               <div>
-                <button class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900 w-full">
+                <button class="btn btn-active btn-primary w-full mt-2">
                   Register
                 </button>
+
                 <p className="text-center text-sm mt-2 mb-2">
                   Already registed?
                 </p>
                 <Link to="/login">
-                  <button class="px-6 py-2  border-[1px] border-black hover:bg-gray-100 rounded-lg  w-full">
-                    Login
-                  </button>
+                  <button class="btn btn-outline w-full">Login</button>
                 </Link>
               </div>
             </div>

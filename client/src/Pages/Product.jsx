@@ -30,15 +30,15 @@ function Product() {
   }
 
   return (
-    <div className="w-6/12 mx-auto">
-      <div className="w-full bg-neutral-800">
-        <h1 className="p-4 text-left text-white uppercase leading-relaxed ">
+    <div className="xl:w-6/12 mx-auto">
+      <div className="w-full bg-zinc-700">
+        <h1 className="p-4 text-left text-white text-xl font-bold uppercase leading-relaxed ">
           {product.name}
         </h1>
       </div>
-      <div className="grid grid-cols-2">
+      <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-1">
         {/* Image Grid */}
-        <div className="grid-cols-1  w-[80%]">
+        <div className="xl:grid-cols-1 xl:w-[80%] lg:w-[70%] md:w-[80%] w-[100%]  xl:p-0 p-2">
           <img src={product.image} alt="" />
         </div>
         <div className="grid-cols-1">

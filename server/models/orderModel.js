@@ -1,73 +1,62 @@
 const mongoose = require("mongoose")
 
-const orderItemSchema = mongoose.Schema({
-  productName: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: String,
-    required: true,
-  },
-  quantity: {
-    type: String,
-    required: true,
-  },
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
-  },
-})
-
 const Order = mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    email: {
+    orderId: {
       type: String,
       required: true,
     },
-    name: {
+    userId: {
       type: String,
       required: true,
     },
-    orderItems: [orderItemSchema],
+    customerId: {
+      type: String,
+      required: true,
+    },
+    userName: {
+      type: String,
+      required: true,
+    },
+    userEmail: {
+      type: String,
+      required: true,
+    },
+    products: [
+      {
+        productName: {
+          type: String,
+          required: true,
+        },
+        productId: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
     total: {
       type: Number,
       required: true,
     },
-    phone: {
-      type: String,
-      required: true,
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    country: {
-      type: String,
-      required: true,
-    },
-    city: {
-      type: String,
-      required: true,
-    },
-    state: {
-      type: String,
-      required: true,
-    },
-    postcode: {
-      type: String,
+    shipping: {
+      type: Object,
       required: true,
     },
     status: {
       type: String,
-      enum: ["NEW", "PROCESSING", "SHIPPED"],
-      default: "NEW",
+      required: true,
+    },
+    paymentStatus: {
+      type: String,
+      required: true,
     },
   },
   {
@@ -75,5 +64,4 @@ const Order = mongoose.Schema(
   }
 )
 
-module.exports = mongoose.model("orderItemSchema", orderItemSchema)
 module.exports = mongoose.model("Order", Order)

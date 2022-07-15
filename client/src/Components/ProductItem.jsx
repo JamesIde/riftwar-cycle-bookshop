@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"
 function ProductItem({ product }) {
   return (
-    <div className="border-[1px] border-indigo-600 p-1 rounded w-max mx-auto mb-2">
+    <div className="border-[1px] border-indigo-600 p-1 rounded mx-auto mb-2">
       <div>
         <img
           src={product.image}
           alt={product.title}
-          className="h-auto w-[340px] mx-auto"
+          className=" mx-auto xl:w-[400px] lg:w-[350px] md:w-[250px] w-[250px]"
         />
       </div>
       <div className="border-l border-r border-b">

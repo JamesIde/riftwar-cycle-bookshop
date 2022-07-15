@@ -5,10 +5,6 @@ const app = express()
 const port = process.env.PORT
 const colors = require("colors")
 const dbConnect = require("./db/dbConnect")
-//  Product Routes
-const userRoutes = require("./routes/userRoutes")
-const productRoutes = require("./routes/productRoutes")
-const orderRoutes = require("./routes/orderRoutes")
 const { urlencoded } = require("express")
 
 dbConnect()
@@ -24,9 +20,10 @@ app.use(
 )
 
 app.use(express.json())
-app.use("/api/user", userRoutes)
-app.use("/api/products", productRoutes)
-app.use("/api/orders", orderRoutes)
+app.use("/api/user", require("./routes/userRoutes"))
+app.use("/api/products", require("./routes/productRoutes"))
+app.use("/api/orders", require("./routes/orderRoutes"))
+app.use("/api/stripe", require("./routes/stripeAPI"))
 app.listen(port, () => {
   console.log(`Server is listening on ${port}`.cyan.underline)
 })

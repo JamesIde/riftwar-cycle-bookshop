@@ -37,7 +37,7 @@ function CartItem({ product }) {
 
   return (
     <>
-      <div class="mt-8 xl:w-6/12 mx-auto">
+      <div class="mt-8 xl:w-6/12 mx-auto xl:px-0 lg:px-0 md:px-0 px-2">
         <div class="flow-root">
           <ul role="list" class="-my-6 divide-y divide-gray-200">
             <li class="flex py-6">

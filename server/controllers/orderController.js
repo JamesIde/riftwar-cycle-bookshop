@@ -1,39 +1,6 @@
 const asyncHandler = require("express-async-handler")
 const Order = require("../models/orderModel")
 
-// TODO Change this controller up to create a stripe session, but use the logic here to create an order after the payment is complete
-const createOrder = asyncHandler(async (req, res) => {
-  // Destructure user details
-  const { email, name, phone, address, country, city, state, postcode } =
-    req.body.user
-
-  // Get the user ID
-  const userId = req.user._id
-
-  const cart = req.body.cart
-
-  const createOrder = await Order.create({
-    user: userId,
-    email: email,
-    name,
-    phone,
-    address,
-    country,
-    city,
-    state,
-    postcode,
-    orderItems: cart,
-    total: parseFloat(req.body.totalCost),
-  })
-
-  if (createOrder) {
-    res.status(201).json({
-      success: true,
-      order: createOrder,
-    })
-  }
-})
-
 const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.user._id })
 
@@ -75,4 +42,4 @@ const getSingleOrder = asyncHandler(async (req, res) => {
   }
 })
 
-module.exports = { createOrder, getAllOrders, getSingleOrder }
+module.exports = { getAllOrders, getSingleOrder }

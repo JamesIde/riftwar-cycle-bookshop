@@ -5,18 +5,24 @@ import { createOrder } from "../features/Orders/orderSlice"
 function Checkout() {
   const dispatch = useDispatch()
   const { cart, isLoading } = useSelector(state => state.productReducer)
-  const { user } = useSelector(state => state.userReducer)
   useEffect(() => {
     dispatch(getCart())
   }, [])
 
-  function calculateTotalCost() {
+  function calculateTotalItemCost() {
     let total = 0
 
     cart.map(item => {
       total += item.quantity * item.price
     })
     return total
+  }
+
+  // Calculate total item cost
+  const totalItemCost = calculateTotalItemCost()
+
+  function calculateTotalOrderCost(tax, orderCost) {
+    return tax + orderCost
   }
 
   const [formData, setFormData] = useState({
@@ -55,24 +61,26 @@ function Checkout() {
         price: item.price,
         quantity: item.quantity,
         productId: item._id,
+        imageUrl: item.image,
       }
     })
 
     // Calculate the total cost of the order
-    const totalCost = calculateTotalCost()
+    const totalItemCost = calculateTotalItemCost()
 
     // Create order object to be sent to the server
     const order = {
       cart: cartData,
-      totalCost: totalCost.toFixed(2),
+      totalCost: parseFloat(totalItemCost + totalItemCost * 0.15).toFixed(2),
       user: formData,
     }
+
     dispatch(createOrder(order))
   }
 
   return (
     <form onSubmit={handleCheckout}>
-      <div className="w-[50%] mx-auto grid grid-cols-2">
+      <div className="xl:w-[50%] lg:w-[45%] md:w-[45%] w-full p-2 mx-auto grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 grid-cols-1">
         <div className="w-full ">
           <h1 className="text-center font-bold text-xl">Shipping Details</h1>
           <p className="text-center text-sm mt-1 mb-2"></p>
@@ -194,8 +202,8 @@ function Checkout() {
             </div>
           </div>
         </div>
-        <div className="w-full ml-10">
-          <h1 className="text-xl font-bold text-center">Order Details</h1>
+        <div className="w-full xl:ml-10">
+          <h1 className="text-xl font-bold text-center mt-4">Order Details</h1>
           <h3 className="text-md font-bold p-2">Product Details</h3>
           <div className="p-2">
             {cart.map(item => {
@@ -227,8 +235,18 @@ function Checkout() {
             })}
           </div>
           <div className="px-2 flex justify-between mb-4">
+            <p className="font-bold">Order Items</p>
+            <p>${totalItemCost}</p>
+          </div>
+          <hr className="mb-3" />
+          <div className="px-2 flex justify-between mb-4">
+            <p className="font-bold">Tax (GST)</p>
+            <p>${totalItemCost * 0.15}</p>
+          </div>
+          <hr className="mb-3" />
+          <div className="px-2 flex justify-between mb-4">
             <p className="font-bold">Total (AUD)</p>
-            <p>${calculateTotalCost().toFixed(2)}</p>
+            <p>${totalItemCost + totalItemCost * (0.15).toFixed(2)}</p>
           </div>
           <div className="px-2">
             <button

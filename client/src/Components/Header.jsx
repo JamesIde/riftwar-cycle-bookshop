@@ -61,7 +61,7 @@ function Header() {
         )}
         <div class="dropdown dropdown-end">
           <Link to="/cart">
-            <label tabindex="0" class="btn btn-ghost btn-circle">
+            <label tabindex="0" className="btn btn-ghost btn-link ml-1">
               <div class="indicator">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -1,13 +1,11 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchProducts } from "../features/Products/productSlice"
-import ProductItem from "./ProductItem"
+import ProductItem from "../Components/ProductItem"
 import Spinner from "../Components/Spinner"
 function Home() {
   const dispatch = useDispatch()
-  const { products, isLoading, isError, message } = useSelector(
-    state => state.productReducer
-  )
+  const { products, isLoading } = useSelector(state => state.productReducer)
   useEffect(() => {
     dispatch(fetchProducts())
   }, [dispatch])

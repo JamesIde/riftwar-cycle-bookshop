@@ -1,15 +1,13 @@
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import React from "react"
 import Header from "./Components/Header"
-import Home from "./Components/Home"
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import Home from "./Pages/Home"
 import Login from "./Pages/Login"
 import Register from "./Pages/Register"
 import Cart from "./Pages/Cart"
 import Product from "./Pages/Product"
-import Footer from "./Components/Footer"
 import Checkout from "./Pages/Checkout"
-import Success from "./Components/Stripe/Success"
-import Cancel from "./Components/Stripe/Cancel"
+import Success from "./Pages/Stripe/Success"
 import NotFound from "./Components/NotFound"
 function App() {
   return (
@@ -24,7 +22,6 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout-success" element={<Success />} />
-          <Route path="/checkout-cancelled" element={<Cancel />} />
           <Route path="/not-found" element={<NotFound />} />
         </Routes>
         {/* <Footer /> */}

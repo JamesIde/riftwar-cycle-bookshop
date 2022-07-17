@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { getCart } from "../features/Products/productSlice"
 import { createOrder } from "../features/Orders/orderSlice"
 function Checkout() {
+  // TODO form validation and clean this page up
   const dispatch = useDispatch()
   const { cart, isLoading } = useSelector(state => state.productReducer)
   useEffect(() => {
@@ -20,10 +21,6 @@ function Checkout() {
 
   // Calculate total item cost
   const totalItemCost = calculateTotalItemCost()
-
-  function calculateTotalOrderCost(tax, orderCost) {
-    return tax + orderCost
-  }
 
   const [formData, setFormData] = useState({
     email: "",
@@ -52,30 +49,39 @@ function Checkout() {
 
   const handleCheckout = e => {
     e.preventDefault()
+    if (
+      !email ||
+      !name ||
+      !phone ||
+      !address ||
+      !country ||
+      !city ||
+      !state ||
+      !postcode
+    ) {
+      alert("Please fill out all fields")
+    } else {
+      // Create array to match the schema
 
-    // Create new array only containing the productName, price and quantity
-    // This matches our order schema
-    const cartData = cart.map(item => {
-      return {
-        productName: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        productId: item._id,
-        imageUrl: item.image,
+      const cartData = cart.map(item => {
+        return {
+          productName: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          productId: item._id,
+          imageUrl: item.image,
+        }
+      })
+
+      // Create order object to be sent to the server
+      const order = {
+        cart: cartData,
+        totalCost: parseFloat(totalItemCost + totalItemCost * 0.15).toFixed(2),
+        user: formData,
       }
-    })
 
-    // Calculate the total cost of the order
-    const totalItemCost = calculateTotalItemCost()
-
-    // Create order object to be sent to the server
-    const order = {
-      cart: cartData,
-      totalCost: parseFloat(totalItemCost + totalItemCost * 0.15).toFixed(2),
-      user: formData,
+      dispatch(createOrder(order))
     }
-
-    dispatch(createOrder(order))
   }
 
   return (
@@ -189,7 +195,7 @@ function Checkout() {
             </div>
             <div className="ml-2">
               <label class="block" for="postcode">
-                Post Code
+                Postcode
               </label>
               <input
                 type="text"
@@ -236,17 +242,19 @@ function Checkout() {
           </div>
           <div className="px-2 flex justify-between mb-4">
             <p className="font-bold">Order Items</p>
-            <p>${totalItemCost}</p>
+            <p>${parseFloat(totalItemCost).toFixed(2)}</p>
           </div>
           <hr className="mb-3" />
           <div className="px-2 flex justify-between mb-4">
             <p className="font-bold">Tax (GST)</p>
-            <p>${totalItemCost * 0.15}</p>
+            <p>${parseFloat(totalItemCost * 0.15).toFixed(2)}</p>
           </div>
           <hr className="mb-3" />
           <div className="px-2 flex justify-between mb-4">
             <p className="font-bold">Total (AUD)</p>
-            <p>${totalItemCost + totalItemCost * (0.15).toFixed(2)}</p>
+            <p>
+              ${parseFloat(totalItemCost + totalItemCost * 0.15).toFixed(2)}
+            </p>
           </div>
           <div className="px-2">
             <button

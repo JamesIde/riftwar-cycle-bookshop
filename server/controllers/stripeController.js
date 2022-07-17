@@ -12,6 +12,16 @@ const createCheckout = asyncHandler(async (req, res) => {
       cart: JSON.stringify(req.body.cart),
     },
   })
+
+  const taxRate = await stripe.taxRates.create({
+    display_name: "Sales Tax",
+    inclusive: false,
+    percentage: 15,
+    country: "AU",
+    state: "SA",
+    jurisdiction: "AU",
+    description: "SA Sales Tax",
+  })
   // Create the array of items to show in session
   const line_items = req.body.cart.map(item => {
     return {
@@ -27,8 +37,10 @@ const createCheckout = asyncHandler(async (req, res) => {
         unit_amount: item.price * 100,
       },
       quantity: item.quantity,
+      tax_rates: [taxRate.id],
     }
   })
+
   const session = await stripe.checkout.sessions.create({
     shipping_address_collection: {
       allowed_countries: ["AU"],
@@ -80,6 +92,7 @@ const createCheckout = asyncHandler(async (req, res) => {
     customer: customer.id,
     line_items,
     mode: "payment",
+
     success_url: `${process.env.CLIENT_URL}/checkout-success`,
     cancel_url: `${process.env.CLIENT_URL}/checkout`,
   })

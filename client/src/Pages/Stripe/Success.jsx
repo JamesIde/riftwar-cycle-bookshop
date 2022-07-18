@@ -1,44 +1,36 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { clearCart } from "../../features/Products/productSlice"
 import { getOrder } from "../../features/Orders/orderSlice"
 import { useDispatch, useSelector } from "react-redux"
+import Spinner from "../../Components/Spinner"
+import { useQuery } from "react-query"
+import axios from "axios"
 function Success() {
-  const { order } = useSelector(state => state.orderReducer)
-  const dispatch = useDispatch()
-  useEffect(() => {
-    // Clear cart
-    dispatch(clearCart())
-    localStorage.removeItem("cart")
+  const API_URL = "/api/orders"
 
-    // Get the order
+  const user = JSON.parse(localStorage.getItem("user"))
+
+  const { isLoading, error, data } = useQuery("order", async () => {
     const orderId = localStorage.getItem("orderId")
-    dispatch(getOrder(orderId))
-  }, [dispatch])
 
-  // TODO move these.
-  // Duplicated code from checkout page
-  function calcTax() {
-    let tax = 0
-    order.products.forEach(product => {
-      tax += product.price * product.quantity * 0.15
+    localStorage.removeItem("cart")
+    const response = await axios.get(`${API_URL}/${orderId}`, {
+      headers: { Authorization: `Bearer ${user.token}` },
     })
-    return tax
-  }
-  function calcTotal() {
-    let total = 0
-    order.products.forEach(product => {
-      total += product.price * product.quantity
-    })
-    return total
-  }
+
+    return response.data
+  })
+
+  if (isLoading) return <Spinner />
+
+  if (error) return "An error has occurred: " + error.message
 
   return (
-    <div className="xl:w-4/12 mx-auto p-2">
+    <div className="xl:w-4/12 lg:w-4/12 md:w-8/12 w-11/12 mx-auto p-2">
       <h1 className="text-lg font-bold mt-2 mb-2">Thank you for your order!</h1>
-      <p>Your order asdasd is {order.orderId}</p>
-
+      <p>Your order ID is {data.data.orderId}</p>
       <h3 className="text-lg font-bold mt-6">Order Items</h3>
-      {order.products.map(product => {
+      {data.data.products.map(product => {
         return (
           <div class="mt-2 mx-auto">
             <div class="">
@@ -69,24 +61,23 @@ function Success() {
           </div>
         )
       })}
-      <div className="flex justify-between mt-12">
-        <h3 className="text-lg font-bold ">Item Total</h3>
-        <p className="text-md text-gray-500">
-          ${parseFloat(calcTotal().toFixed(2))}
-        </p>
-      </div>
-      <hr className="mt-1 mb-2" />
-      <div className="flex justify-between mt-5">
-        <h3 className="text-lg font-bold ">Tax</h3>
-        <p className="text-md text-gray-500">
-          ${parseFloat(calcTax().toFixed(2))}
-        </p>
-      </div>
-      <hr className="mt-1 mb-2" />
-      <div className="flex justify-between mt-2">
-        <h3 className="text-lg font-bold">Order Total</h3>
-        <p className="text-lg">${order.total}</p>
-      </div>
+
+      <>
+        <div className="flex justify-between mt-12">
+          <h3 className="text-lg font-bold ">Item Total</h3>
+          <p className="text-md text-gray-500">${data.data.total.itemTotal}</p>
+        </div>
+        <hr className="mt-1 mb-2" />
+        <div className="flex justify-between mt-5">
+          <h3 className="text-lg font-bold ">Tax</h3>
+          <p className="text-md text-gray-500">${data.data.total.tax}</p>
+        </div>
+        <hr className="mt-1 mb-2" />
+        <div className="flex justify-between mt-2">
+          <h3 className="text-lg font-bold">Order Total</h3>
+          <p className="text-lg">${data.data.total.orderTotal}</p>
+        </div>
+      </>
     </div>
   )
 }

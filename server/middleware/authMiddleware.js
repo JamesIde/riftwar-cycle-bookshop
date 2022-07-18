@@ -27,7 +27,9 @@ const protect = asyncHandler(async (req, res, next) => {
     req.user = checkUser
     next()
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" })
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Possible causes: Invalid token" })
   }
 })
 

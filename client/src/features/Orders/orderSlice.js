@@ -42,9 +42,9 @@ const orderSlice = createSlice({
       state.message = ""
     })
     builder.addCase(getOrder.fulfilled, (state, action) => {
-      state.isLoading = true
+      state.isLoading = false
       state.isError = false
-      state.isSuccess = false
+      state.isSuccess = true
       state.message = ""
       state.order = action.payload.data
     })

@@ -43,7 +43,7 @@ const Order = mongoose.Schema(
       },
     ],
     total: {
-      type: Number,
+      type: Object,
       required: true,
     },
     shipping: {

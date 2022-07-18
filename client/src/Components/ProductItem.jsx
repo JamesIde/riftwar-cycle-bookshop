@@ -11,7 +11,8 @@ function ProductItem({ product }) {
       </div>
       <div className="border-l border-r border-b">
         <h1 className="mt-2 font-bold text-center text-xl">{product.name}</h1>
-        <p className="text-left mt-1 mb-1 p-2">As low as: ${product.price}</p>
+        <p className="mt-1 text-center text-sm">{product.series}</p>
+        <p className="font-bold p-2 text-center">${product.price}</p>
         <Link to={`/${product.slug}`}>
           <div className="bg-zinc-800 hover:cursor-pointer">
             <p className="p-3 text-center text-white font-bold text-lg">

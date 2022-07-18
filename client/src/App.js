@@ -9,9 +9,12 @@ import Product from "./Pages/Product"
 import Checkout from "./Pages/Checkout"
 import Success from "./Pages/Stripe/Success"
 import NotFound from "./Components/NotFound"
+import { QueryClient, QueryClientProvider } from "react-query"
+import Account from "./Pages/Account"
 function App() {
+  const queryClient = new QueryClient()
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Header />
         <Routes>
@@ -19,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/:slug" element={<Product />} />
+          <Route path="/account" element={<Account />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout-success" element={<Success />} />
@@ -26,7 +30,7 @@ function App() {
         </Routes>
         {/* <Footer /> */}
       </Router>
-    </>
+    </QueryClientProvider>
   )
 }
 

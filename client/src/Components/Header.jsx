@@ -37,9 +37,11 @@ function Header() {
                 tabindex="0"
                 class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
               >
-                <li>
-                  <a>Account</a>
-                </li>
+                <Link to="/account">
+                  <li>
+                    <a>Account</a>
+                  </li>
+                </Link>
 
                 <li>
                   <a onClick={handleClick}>Logout</a>

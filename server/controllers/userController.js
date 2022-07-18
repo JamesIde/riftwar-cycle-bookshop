@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler")
 const User = require("../models/userModel")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const { update } = require("../models/userModel")
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
@@ -76,6 +77,34 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 })
 
+const updateUser = asyncHandler(async (req, res) => {
+  const { name, email } = req.body
+
+  const currentUser = await User.findOne({ id: req.user._id })
+
+  try {
+    const updateUser = await User.findByIdAndUpdate(
+      currentUser._id,
+      {
+        name,
+        email,
+      },
+      {
+        new: true,
+      }
+    )
+    res.status(200).json({
+      updatedUser: {
+        name: updateUser.name,
+        email: updateUser.email,
+      },
+    })
+  } catch (error) {
+    console.log(error)
+  }
+  // console.log(currentUser._id.toString())
+})
+
 const getMe = asyncHandler(async (req, res) => {
   res.status(200).json({
     id: req.user._id,
@@ -89,4 +118,4 @@ const generateToken = id => {
     expiresIn: "5h",
   })
 }
-module.exports = { registerUser, loginUser, getMe }
+module.exports = { registerUser, loginUser, getMe, updateUser }

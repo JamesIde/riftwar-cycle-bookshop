@@ -50,24 +50,29 @@ function Product() {
             <hr className="mb-4 mt-1" />
             <p className="p-2 leading-normal">{product.description}</p>
           </div>
-          <div className="mx-2">
-            {" "}
-            <p>
-              <strong>ISBN: </strong>
-              {product.isbn}
-            </p>
-            <p className="">
+          <div className="flex flex-row justify-between">
+            <div className="mx-2">
               {" "}
-              <strong>Published: </strong>
-              {product.published}
-            </p>
+              <p>
+                <strong>ISBN: </strong>
+                {product.isbn}
+              </p>
+              <p className="">
+                {" "}
+                <strong>Published: </strong>
+                {product.published}
+              </p>
+            </div>
+            <div>
+              <p className="text-3xl px-2">${product.price}</p>
+            </div>
           </div>
           <div
             className="mx-2 bg-black hover:bg-neutral-800 cursor-pointer duration-500"
             onClick={() => addItemToCart(product._id)}
           >
             <p className="p-2 mt-4 mb-2 px-4 w-full  text-white text-center">
-              Add to Cart
+              ADD TO CART
             </p>
           </div>
         </div>

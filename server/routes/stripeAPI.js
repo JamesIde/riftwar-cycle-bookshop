@@ -21,7 +21,12 @@ const createOrder = async (customer, data) => {
       customerId: customer.id,
       userEmail: customer.email,
       products: JSON.parse(customer.metadata.cart),
-      total: data.amount_total / 100,
+      // total: data.amount_total / 100,
+      total: {
+        tax: data.total_details.amount_tax / 100,
+        itemTotal: data.amount_subtotal / 100,
+        orderTotal: data.amount_total / 100,
+      },
       shipping: data.shipping.address,
       status: data.status,
       paymentStatus: data.payment_status,

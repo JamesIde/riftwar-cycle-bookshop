@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { loginUser } from "../features/User/userSlice"
 import { useNavigate } from "react-router-dom"
 import Spinner from "../Components/Spinner"
+import { toast } from "react-toastify"
 
 function Login() {
   const [email, setEmail] = useState("")
@@ -11,17 +12,34 @@ function Login() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isLoading, isError } = useSelector(state => state.userReducer)
+  const { isLoading, isError, message, user } = useSelector(
+    state => state.userReducer
+  )
+
+  useEffect(() => {
+    if (user) {
+      navigate("/")
+      toast.success(`Welcome ${user.name}`)
+    }
+
+    if (isError) {
+      toast.error(message)
+    }
+  }, [isError, navigate, user, message])
 
   const handleSubmit = e => {
     e.preventDefault()
 
-    const userData = {
-      email,
-      password,
+    if (!email || !password) {
+      // toast.error("Please enter all fields!")
+    } else {
+      //Form data
+      const userData = {
+        email,
+        password,
+      }
+      dispatch(loginUser(userData))
     }
-    dispatch(loginUser(userData))
-    navigate("/")
   }
 
   if (isLoading) {

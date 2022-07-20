@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { getCart } from "../features/Products/productSlice"
 import { createOrder } from "../features/Orders/orderSlice"
+import { toast } from "react-toastify"
 function Checkout() {
-  // TODO form validation and clean this page up
   const dispatch = useDispatch()
   const { cart, isLoading } = useSelector(state => state.productReducer)
   useEffect(() => {
@@ -59,7 +59,7 @@ function Checkout() {
       !state ||
       !postcode
     ) {
-      alert("Please fill out all fields")
+      toast.error("Please ensure all fields are populated!")
     } else {
       // Create array to match the schema
 

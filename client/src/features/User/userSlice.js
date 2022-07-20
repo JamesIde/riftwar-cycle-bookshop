@@ -1,8 +1,6 @@
+import userService from "./userService"
+
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
-
-const axios = require("axios")
-
-const API_URL = "/api/user"
 
 const localStorageUser = localStorage.getItem("user")
 
@@ -13,6 +11,41 @@ const initialState = {
   isSuccess: false,
   message: "",
 }
+
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (userData, thunkAPI) => {
+    try {
+      const response = await userService.login(userData)
+
+      localStorage.setItem("user", JSON.stringify(response.data))
+
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message)
+    }
+  }
+)
+
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (formData, thunkAPI) => {
+    try {
+      const response = await userService.register(formData)
+      localStorage.setItem("user", JSON.stringify(response.data))
+
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message)
+    }
+  }
+)
+
+export const logoutUser = createAsyncThunk("auth/logout", () => {
+  localStorage.removeItem("user")
+  localStorage.removeItem("cart")
+  // Get product cart
+})
 
 const userSlice = createSlice({
   name: "user",
@@ -38,6 +71,25 @@ const userSlice = createSlice({
       state.isSuccess = false
       state.message = action.payload
     })
+    builder.addCase(registerUser.pending, state => {
+      state.isLoading = true
+      state.isError = false
+      state.isSuccess = false
+      state.message = ""
+    })
+    builder.addCase(registerUser.fulfilled, (state, action) => {
+      state.user = action.payload
+      state.isLoading = false
+      state.isError = false
+      state.isSuccess = true
+      state.message = "Login successful"
+    })
+    builder.addCase(registerUser.rejected, (state, action) => {
+      state.isLoading = false
+      state.isError = true
+      state.isSuccess = false
+      state.message = action.payload
+    })
     builder.addCase(logoutUser.fulfilled, state => {
       state.user = null
       state.isLoading = false
@@ -46,26 +98,6 @@ const userSlice = createSlice({
       state.message = "Logout successful"
     })
   },
-})
-
-export const loginUser = createAsyncThunk(
-  "user/loginUser",
-  async (userData, thunkAPI) => {
-    try {
-      const response = await axios.post(API_URL + "/login", userData)
-
-      localStorage.setItem("user", JSON.stringify(response.data))
-      return response.data
-    } catch (error) {
-      thunkAPI.rejectWithValue(error.message)
-    }
-  }
-)
-
-export const logoutUser = createAsyncThunk("auth/logout", async thunkAPI => {
-  localStorage.removeItem("user")
-  localStorage.removeItem("cart")
-  // Get product cart
 })
 
 export default userSlice.reducer

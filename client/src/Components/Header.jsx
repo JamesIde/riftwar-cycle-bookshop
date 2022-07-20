@@ -2,17 +2,19 @@ import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../features/User/userSlice"
 import { clearCart } from "../features/Products/productSlice"
-import { AiOutlineShoppingCart } from "react-icons/ai"
-import Spinner from "./Spinner"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 function Header() {
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const { user } = useSelector(state => state.userReducer)
   const { cart } = useSelector(state => state.productReducer)
   const handleClick = () => {
     dispatch(logoutUser())
     dispatch(clearCart())
+    toast.success("Logout successful")
+    navigate("/")
   }
 
   return (
@@ -55,7 +57,7 @@ function Header() {
               <Link to="/login">
                 <p className="p-2 btn btn-ghost">Login</p>
               </Link>
-              <Link to="/login">
+              <Link to="/register">
                 <p className="p-2 btn btn-ghost">Register</p>
               </Link>
             </div>

@@ -2,8 +2,9 @@ import { useParams, Link } from "react-router-dom"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchProduct, addtoCart } from "../features/Products/productSlice"
-import Spinner from "../Components/Spinner"
 import { useNavigate } from "react-router-dom"
+import Spinner from "../Components/Spinner"
+import { toast } from "react-toastify"
 function Product() {
   const slug = useParams().slug
   const dispatch = useDispatch()
@@ -25,6 +26,7 @@ function Product() {
     if (!user) {
       navigate("/login")
     } else {
+      toast.success("Item added to cart!")
       dispatch(addtoCart(productId))
     }
   }

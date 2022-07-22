@@ -26,7 +26,7 @@ function Cart() {
 
   return (
     <>
-      <div className="w-full p-2 bg-indigo-600 text-white  font-bold text-xl xl:w-[50%] mx-auto">
+      <div className="w-[75%] p-2 bg-indigo-600 text-white  font-bold text-xl xl:w-[50%] mx-auto">
         <p>Shopping Cart</p>
       </div>
 

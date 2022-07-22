@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import {
   getCart,
   removeFromCart,
@@ -18,6 +19,7 @@ function CartItem({ product }) {
   const removeItemFromCart = productId => {
     dispatch(removeFromCart(productId))
     dispatch(getCart())
+    toast.success("Item removed from cart")
   }
 
   const increaseCartQuantity = productId => {

@@ -86,7 +86,7 @@ function Checkout() {
 
   return (
     <form onSubmit={handleCheckout}>
-      <div className="xl:w-[50%] lg:w-[45%] md:w-[45%] w-full p-2 mx-auto grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 grid-cols-1">
+      <div className="xl:w-[50%] lg:w-[45%] md:w-[45%] w-full p-2 mx-auto grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 grid-cols-1">
         <div className="w-full ">
           <h1 className="text-center font-bold text-xl">Shipping Details</h1>
           <p className="text-center text-sm mt-1 mb-2"></p>

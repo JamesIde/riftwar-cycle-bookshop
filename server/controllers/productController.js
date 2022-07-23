@@ -1,7 +1,6 @@
-const express = require("express")
 const asyncHandler = require("express-async-handler")
-const { create } = require("../models/productModel")
 const Product = require("../models/productModel")
+const Review = require("../models/reviewModel")
 
 const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find()
@@ -23,7 +22,10 @@ const getProduct = asyncHandler(async (req, res) => {
     })
   }
 
-  res.status(200).send(product)
+  res.status(200).json({
+    success: true,
+    product,
+  })
 })
 
 const createProduct = asyncHandler(async (req, res) => {

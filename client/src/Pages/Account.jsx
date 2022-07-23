@@ -42,7 +42,7 @@ function Account() {
   // TODO Start reviews front and backend
   return (
     <>
-      {loading ? <Spinner /> : null}
+      <div className="w-6/12 mx-auto">{loading ? <Spinner /> : null}</div>
       {data ? (
         <>
           <div className="xl:w-6/12 mx-auto  text-center">

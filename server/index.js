@@ -24,6 +24,7 @@ app.use("/api/user", require("./routes/userRoutes"))
 app.use("/api/products", require("./routes/productRoutes"))
 app.use("/api/orders", require("./routes/orderRoutes"))
 app.use("/api/stripe", require("./routes/stripeAPI"))
+app.use("/api/reviews", require("./routes/reviewRoutes"))
 app.listen(port, () => {
   console.log(`Server is listening on ${port}`.cyan.underline)
 })

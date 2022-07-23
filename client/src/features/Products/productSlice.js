@@ -96,7 +96,7 @@ const productSlice = createSlice({
       state.message = ""
     })
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
-      state.product = action.payload
+      state.product = action.payload.product
       state.isLoading = false
       state.isError = false
       state.isSuccess = true

@@ -2,7 +2,7 @@ function Footer() {
   return (
     <>
       <div className="p-2  border-t w-full mt-auto">
-        <h1 className="text-center mt-4 mb-2">
+        <h1 className="text-center mt-4 font-bold">
           Copyright © 2022 The Riftwar Cycle Bookshop
         </h1>
 
@@ -11,7 +11,7 @@ function Footer() {
             for="my-modal"
             class="modal-button hover:text-cyan-500 cursor-pointer duration-500"
           >
-            Learn More
+            Read Me
           </label>
         </div>
       </div>

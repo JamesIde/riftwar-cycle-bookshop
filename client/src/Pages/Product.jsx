@@ -6,37 +6,36 @@ import StarRatings from "react-star-ratings"
 import { useNavigate } from "react-router-dom"
 import Spinner from "../Components/Spinner"
 import { toast } from "react-toastify"
-import { fetchProductReviews } from "../features/Reviews/reviewSlice"
+import {
+  fetchProductReviews,
+  fetchAverageRating,
+} from "../features/Reviews/reviewSlice"
+import Star from "../Components/Star"
 function Product() {
   const slug = useParams().slug
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  // Local State
+  const [rating, setRating] = useState(0)
+  const changeRating = newRating => {
+    setRating(newRating)
+  }
+
   // Access redux store
   const { product, isLoading, isSuccess, isError, message } = useSelector(
     state => state.productReducer
   )
-  const [reviewAverage, setReviewAverage] = useState(0)
   const { user } = useSelector(state => state.userReducer)
-  const { reviews } = useSelector(state => state.reviewReducer)
+  const { reviews, averageRating } = useSelector(state => state.reviewReducer)
   useEffect(() => {
     dispatch(fetchProduct(slug))
     dispatch(fetchProductReviews(slug))
-
-    if (product) {
-      let sum = 0
-
-      reviews.forEach(review => {
-        sum += review.rating
-      })
-      setReviewAverage(sum / reviews.length)
-    }
+    dispatch(fetchAverageRating(slug))
   }, [])
 
   // TODO
-  // Possible fix for page not laoding
-  // Add review title like Snowys and copy the design
-  // UseEffect, await the product load, calculate the average rating, set it in local useState
+  // Look into mongoose ordering and possible button clicks to filter the reviews by rating
 
   if (isLoading) {
     return <Spinner />
@@ -60,7 +59,6 @@ function Product() {
         </h1>
       </div>
       <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-1">
-        {/* Image Grid */}
         <div className="xl:grid-cols-1 xl:w-[80%] lg:w-[70%] md:w-[80%] w-[100%]  xl:p-0 p-2">
           <img src={product.image} alt="" />
         </div>
@@ -73,29 +71,40 @@ function Product() {
             <hr className="mb-2 mt-1" />
             <div className="flex flex-row justify-center">
               <div className="">
-                <StarRatings
-                  rating={reviewAverage}
-                  starRatedColor="rgb(230, 67, 47)"
-                  numberOfStars={5}
-                  name="rating"
-                  starDimension="20px"
-                  starSpacing="1px"
-                />
+                {/* {averageRating ? (
+                  <>
+                    
+                  </>
+                ) : (
+                  <>No Ratings received </>
+                )} */}
               </div>
               <div className="px-4">
                 {reviews.length > 0 ? (
                   <>
-                    {reviews.length > 1 ? (
-                      <>
-                        {" "}
-                        <p>{reviews.length} reviews</p>{" "}
-                      </>
-                    ) : (
-                      <>
-                        {" "}
-                        <p>{reviews.length} review</p>{" "}
-                      </>
-                    )}
+                    <div className="flex flex-row ">
+                      <div className="pr-3">
+                        <StarRatings
+                          rating={averageRating.average}
+                          starRatedColor="rgb(230, 67, 47)"
+                          numberOfStars={5}
+                          name="rating"
+                          starDimension="18px"
+                          starSpacing="1px"
+                        />
+                      </div>
+                      {reviews.length > 1 ? (
+                        <>
+                          {" "}
+                          <p>{reviews.length} reviews</p>{" "}
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          <p>{reviews.length} review</p>{" "}
+                        </>
+                      )}
+                    </div>
                   </>
                 ) : (
                   <p> No reviews yet </p>
@@ -135,53 +144,84 @@ function Product() {
         <h1 className="text-center text-xl font-bold xl:mt-24 md:mt-14 mt-4 mb-2">
           Reviews
         </h1>
-        <div className="grid  xl:grid-cols-2 md:grid-cols-2 ">
-          <div className="xl:grid-cols-1 grid-cols-2">
-            <div className="p-2 xl:w-[80%] w-full">
-              {reviews.length > 0 ? (
-                <>
-                  {reviews.map(review => {
-                    return (
-                      <>
-                        <div className="flex flex-row w-full">
-                          <div>
-                            <StarRatings
-                              rating={review.rating}
-                              starRatedColor="rgb(230, 67, 47)"
-                              // changeRating={this.changeRating}
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="20px"
-                              starSpacing="1px"
-                            />
-                          </div>
-
-                          <p className="px-2  p-1 text-sm text-gray-500">
-                            {new Date(review.createdAt).toLocaleDateString(
-                              "AU"
-                            )}{" "}
-                          </p>
-                        </div>
+        <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 grid-cols-1">
+          <div className="p-2 w-full">
+            {reviews.length > 0 ? (
+              <>
+                {reviews.map(review => {
+                  return (
+                    <>
+                      <div className="flex flex-row w-full">
                         <div>
-                          <p className="font-bold text-md mt-1">
-                            {review.reviewTitle}
-                          </p>
-                          <p className="text-sm mt-1">{review.reviewDesc}</p>
-                          <p className="text-sm mt-2 mb-1 text-gray-500">
-                            Written by {review.userName}
-                          </p>
-                          <hr className="border-t-[0.5px] mt-1 mb-1 border-gray-400" />
+                          <StarRatings
+                            rating={review.rating}
+                            starRatedColor="rgb(230, 67, 47)"
+                            // changeRating={this.changeRating}
+                            numberOfStars={5}
+                            name="rating"
+                            starDimension="20px"
+                            starSpacing="1px"
+                          />
                         </div>
-                      </>
-                    )
-                  })}
-                </>
-              ) : (
-                <>
-                  <p className="text-center">No reviews yet</p>
-                </>
-              )}
-            </div>
+
+                        <p className="px-2  p-1 text-sm text-gray-500">
+                          {new Date(review.createdAt).toLocaleDateString("AU")}{" "}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-md mt-1">
+                          {review.reviewTitle}
+                        </p>
+                        <p className="text-sm mt-1">{review.reviewDesc}</p>
+                        <p className="text-sm mt-2 mb-1 text-gray-500">
+                          Written by {review.userName}
+                        </p>
+                        <hr className="border-t-[0.5px] mt-1 mb-1 border-gray-400" />
+                      </div>
+                    </>
+                  )
+                })}
+              </>
+            ) : (
+              <>{/* <p className="text-center">No reviews yet</p> */}</>
+            )}
+          </div>
+          <div className="xl:pl-8 lg:pl-8 md:pl-8 p-2">
+            <h1 className="text-center font-bold text-md">
+              Read {product.name}?
+            </h1>
+            <p className="text-center">Leave a review!</p>
+            {/* Star Rating will go here probably within the form */}
+            <form>
+              <div>
+                <span className="flex flex-row">
+                  {[1, 2, 3, 4, 5].map(value => (
+                    <Star
+                      key={value}
+                      filled={value <= rating}
+                      onClick={() => changeRating(value)}
+                    />
+                  ))}
+                </span>
+              </div>
+              <label htmlFor="title" className="w-full text-sm mt-1 mb-1">
+                Review Title
+              </label>
+              <input
+                type="text"
+                className="w-full border-[1px] border-black rounded p-1"
+                placeholder="Give it a title!"
+              />
+              <label htmlFor="description" className="text-sm mt-1 mb-1 ">
+                Review Description
+              </label>
+              <textarea
+                name=""
+                id=""
+                className="w-full border-[1px] border-black rounded p-2"
+                placeholder="What bits did you like?"
+              ></textarea>
+            </form>
           </div>
         </div>
       </div>

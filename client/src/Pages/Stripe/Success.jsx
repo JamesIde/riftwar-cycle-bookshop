@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react"
-import { clearCart } from "../../features/Products/productSlice"
-import { getOrder } from "../../features/Orders/orderSlice"
-import { useDispatch, useSelector } from "react-redux"
 import Spinner from "../../Components/Spinner"
-import { useQuery } from "react-query"
 import axios from "axios"
+import { useQuery } from "react-query"
+import { Link } from "react-router-dom"
 function Success() {
   const API_URL = "/api/orders"
 
@@ -76,6 +73,13 @@ function Success() {
         <div className="flex justify-between mt-2">
           <h3 className="text-lg font-bold">Order Total</h3>
           <p className="text-lg">${data.data.total.orderTotal}</p>
+        </div>
+        <div>
+          <Link to="/">
+            <button className="p-2 w-full bg-indigo-500 text-white rounded mt-3 mb-3">
+              <p>RETURN TO HOME</p>
+            </button>
+          </Link>
         </div>
       </>
     </div>

@@ -139,11 +139,9 @@ function Account() {
                   <p className="text-center font-bold">
                     You have no orders yet!
                   </p>
-                  <Link to="/">
-                    <p className="text-center font-bold mt-1 mb-1 text-blue-800 underline underline-offset-1">
-                      Start shopping!
-                    </p>
-                  </Link>
+                  <p className="font-bold mt-1 mb-1 text-blue-800 underline underline-offset-1 w-max mx-auto border-">
+                    <Link to="/">Start shopping!</Link>
+                  </p>
                 </>
               )}
             </div>

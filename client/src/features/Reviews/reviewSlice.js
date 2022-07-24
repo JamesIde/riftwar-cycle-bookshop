@@ -13,9 +13,23 @@ export const fetchProductReviews = createAsyncThunk(
   }
 )
 
+export const fetchAverageRating = createAsyncThunk(
+  "item/getAverageRating",
+  async (slug, thunkAPI) => {
+    try {
+      const response = await axios.get("/api/reviews/rating", {
+        params: { slug },
+      })
+      return response.data
+    } catch (error) {
+      thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
 const initialState = {
   reviews: [],
-  review: {},
+  averageRating: {},
   isLoading: false,
   isSuccess: false,
   isError: false,
@@ -41,6 +55,25 @@ const reviewSlice = createSlice({
       state.message = "Reviews fetched successfully"
     })
     builder.addCase(fetchProductReviews.rejected, (state, action) => {
+      state.isLoading = false
+      state.isError = true
+      state.isSuccess = false
+      state.message = action.payload
+    })
+    builder.addCase(fetchAverageRating.pending, state => {
+      state.isLoading = true
+      state.isError = false
+      state.isSuccess = false
+      state.message = ""
+    })
+    builder.addCase(fetchAverageRating.fulfilled, (state, action) => {
+      state.averageRating = action.payload
+      state.isLoading = false
+      state.isError = false
+      state.isSuccess = true
+      state.message = "Reviews fetched successfully"
+    })
+    builder.addCase(fetchAverageRating.rejected, (state, action) => {
       state.isLoading = false
       state.isError = true
       state.isSuccess = false

@@ -9,6 +9,7 @@ import { toast } from "react-toastify"
 import {
   fetchProductReviews,
   fetchAverageRating,
+  createReview,
 } from "../features/Reviews/reviewSlice"
 import Star from "../Components/Star"
 function Product() {
@@ -22,7 +23,9 @@ function Product() {
     setRating(newRating)
   }
 
-  // Access redux store
+  const [reviewTitle, setReviewTitle] = useState("")
+  const [reviewDescription, setReviewDescription] = useState("")
+  // REDUX
   const { product, isLoading, isSuccess, isError, message } = useSelector(
     state => state.productReducer
   )
@@ -32,10 +35,9 @@ function Product() {
     dispatch(fetchProduct(slug))
     dispatch(fetchProductReviews(slug))
     dispatch(fetchAverageRating(slug))
-  }, [])
+  }, [dispatch])
 
-  // TODO
-  // Look into mongoose ordering and possible button clicks to filter the reviews by rating
+  // TODO Look into mongoose ordering and possible button clicks to filter the reviews by rating
 
   if (isLoading) {
     return <Spinner />
@@ -48,6 +50,33 @@ function Product() {
     } else {
       toast.success("Item added to cart!")
       dispatch(addtoCart(productId))
+    }
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (!reviewDescription || !reviewTitle || !rating) {
+      toast.error("Please fill in all fields")
+    } else {
+      const reviewData = {
+        slug,
+        reviewDesc: reviewDescription,
+        reviewTitle: reviewTitle,
+        rating,
+      }
+
+      // Dispatch to backend
+      dispatch(createReview(reviewData))
+      dispatch(fetchAverageRating(slug))
+      dispatch(fetchProduct(slug))
+
+      // Clear local state
+      setReviewDescription("")
+      setReviewTitle("")
+      setRating(0)
+
+      // Alert User
+      toast.success("Thanks for your review!")
     }
   }
 
@@ -70,15 +99,6 @@ function Product() {
             <p className="text-center font-sm">Part of {product.series}</p>
             <hr className="mb-2 mt-1" />
             <div className="flex flex-row justify-center">
-              <div className="">
-                {/* {averageRating ? (
-                  <>
-                    
-                  </>
-                ) : (
-                  <>No Ratings received </>
-                )} */}
-              </div>
               <div className="px-4">
                 {reviews.length > 0 ? (
                   <>
@@ -186,42 +206,62 @@ function Product() {
               <>{/* <p className="text-center">No reviews yet</p> */}</>
             )}
           </div>
+          {/* TODO Add terninary to check if User is logged in */}
           <div className="xl:pl-8 lg:pl-8 md:pl-8 p-2">
-            <h1 className="text-center font-bold text-md">
-              Read {product.name}?
-            </h1>
-            <p className="text-center">Leave a review!</p>
-            {/* Star Rating will go here probably within the form */}
-            <form>
-              <div>
-                <span className="flex flex-row">
-                  {[1, 2, 3, 4, 5].map(value => (
-                    <Star
-                      key={value}
-                      filled={value <= rating}
-                      onClick={() => changeRating(value)}
-                    />
-                  ))}
-                </span>
-              </div>
-              <label htmlFor="title" className="w-full text-sm mt-1 mb-1">
-                Review Title
-              </label>
-              <input
-                type="text"
-                className="w-full border-[1px] border-black rounded p-1"
-                placeholder="Give it a title!"
-              />
-              <label htmlFor="description" className="text-sm mt-1 mb-1 ">
-                Review Description
-              </label>
-              <textarea
-                name=""
-                id=""
-                className="w-full border-[1px] border-black rounded p-2"
-                placeholder="What bits did you like?"
-              ></textarea>
-            </form>
+            {user ? (
+              <>
+                <h1 className="text-center font-bold text-md">
+                  Read {product.name}?
+                </h1>
+                <p className="text-center">Leave a review!</p>
+                <form onSubmit={handleSubmit}>
+                  <div>
+                    <span className="flex flex-row">
+                      {[1, 2, 3, 4, 5].map(value => (
+                        <Star
+                          key={value}
+                          filled={value <= rating}
+                          onClick={() => changeRating(value)}
+                        />
+                      ))}
+                    </span>
+                    <p className="text-sm text-gray-500 mt-1 mb-1">
+                      Star rating
+                    </p>
+                  </div>
+                  <label htmlFor="title" className="w-full text-sm mt-1 mb-1">
+                    Review Title
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full border-[1px] border-gray-500 rounded p-1"
+                    placeholder="Give it a title!"
+                    onChange={e => setReviewTitle(e.target.value)}
+                  />
+                  <label htmlFor="description" className="text-sm mt-1 mb-1 ">
+                    Review Description
+                  </label>
+                  <textarea
+                    name=""
+                    id=""
+                    className="w-full border-[1px] border-gray-500 rounded p-2"
+                    placeholder="What did you like about this book?"
+                    onChange={e => setReviewDescription(e.target.value)}
+                  ></textarea>
+                  <button type="submit" className="p-2 bg-indigo-500 rounded">
+                    <p className="text-white font-bold text-md">Submit</p>
+                  </button>
+                </form>
+              </>
+            ) : (
+              <h1 className="text-center font-bold text-md">
+                Please{" "}
+                <a href="/login" className="text-indigo-500">
+                  log in
+                </a>{" "}
+                to leave a review!
+              </h1>
+            )}
           </div>
         </div>
       </div>

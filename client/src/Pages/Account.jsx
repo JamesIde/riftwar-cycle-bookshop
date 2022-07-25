@@ -38,8 +38,7 @@ function Account() {
     console.log(error)
     return error.message
   }
-  //TODO fix this page lol
-  // TODO Start reviews front and backend
+
   return (
     <>
       <div className="w-6/12 mx-auto">{loading ? <Spinner /> : null}</div>

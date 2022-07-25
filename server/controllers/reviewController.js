@@ -40,7 +40,6 @@ const getAverageRating = asyncHandler(async (req, res) => {
 const createReview = asyncHandler(async (req, res) => {
   // Check a user was passed in
   const reviewUser = await User.findOne({ userId: req.user.id })
-
   if (!reviewUser) {
     return res.status(400).json({
       message: "User does not exist",
@@ -53,6 +52,7 @@ const createReview = asyncHandler(async (req, res) => {
       message: "Please provide a rating and review",
     })
   }
+
   // Construct new review
   const newReview = {
     userId: reviewUser.id,

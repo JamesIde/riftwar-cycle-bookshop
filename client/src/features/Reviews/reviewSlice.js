@@ -1,6 +1,15 @@
 const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit")
 const axios = require("axios")
 
+const initialState = {
+  reviews: [],
+  averageRating: {},
+  isLoading: false,
+  isSuccess: false,
+  isError: false,
+  message: "",
+}
+
 export const fetchProductReviews = createAsyncThunk(
   "item/getProductReviews",
   async (slug, thunkAPI) => {
@@ -27,14 +36,34 @@ export const fetchAverageRating = createAsyncThunk(
   }
 )
 
-const initialState = {
-  reviews: [],
-  averageRating: {},
-  isLoading: false,
-  isSuccess: false,
-  isError: false,
-  message: "",
-}
+export const createReview = createAsyncThunk(
+  "item/createReview",
+  async (reviewData, thunkAPI) => {
+    const { slug } = reviewData
+    const { reviewDesc, reviewTitle, rating } = reviewData
+
+    try {
+      const token = thunkAPI.getState().userReducer.user.token
+      const response = await axios.post(
+        "/api/reviews/",
+        {
+          reviewDesc,
+          reviewTitle,
+          rating,
+        },
+        {
+          params: { slug },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      return response.data
+    } catch (error) {
+      thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
 
 const reviewSlice = createSlice({
   name: "slice",
@@ -74,6 +103,26 @@ const reviewSlice = createSlice({
       state.message = "Reviews fetched successfully"
     })
     builder.addCase(fetchAverageRating.rejected, (state, action) => {
+      state.isLoading = false
+      state.isError = true
+      state.isSuccess = false
+      state.message = action.payload
+    })
+    builder.addCase(createReview.pending, state => {
+      state.isLoading = true
+      state.isError = false
+      state.isSuccess = false
+      state.message = ""
+    })
+    builder.addCase(createReview.fulfilled, (state, action) => {
+      // Spread across and add new review
+      state.reviews = [...state.reviews, action.payload.review]
+      state.isLoading = false
+      state.isError = false
+      state.isSuccess = true
+      state.message = "Review Created Successfully!"
+    })
+    builder.addCase(createReview.rejected, (state, action) => {
       state.isLoading = false
       state.isError = true
       state.isSuccess = false

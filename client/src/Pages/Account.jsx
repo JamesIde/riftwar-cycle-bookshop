@@ -22,9 +22,7 @@ function Account() {
     setisDisabled(isDisabled => !isDisabled)
   }
 
-  //TODO On update, send user deets to backend, get response,
-  // Update it on UI
-  // Then disable button
+  //TODO User update their own phone data with a modal
 
   // Fetch the order information
   const { loading, error, data } = useQuery("orders", async () => {
@@ -53,7 +51,7 @@ function Account() {
             </p>
           </div>
 
-          <div className="grid xl:grid-cols-2 md:grid-cols-2 grid-cols-1 xl:w-6/12 lg:w-6/12 md:w-5/12 w-7/12 mx-auto">
+          <div className="grid xl:grid-cols-2 md:grid-cols-1 grid-cols-1 xl:w-6/12 lg:w-6/12 md:w-5/12 w-7/12 mx-auto">
             <div className="grid-cols-1 w-full">
               <h3 className="text-center font-bold">Personal Information</h3>
               <div>
@@ -89,18 +87,11 @@ function Account() {
                 >
                   Update
                 </button>
-
-                {/* <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded"
-                  onClick={enableEdit}
-                >
-                  Edit
-                </button> */}
               </div>
             </div>
-            <div className="w-full grid-cols-1">
+            <div className="w-full grid-cols-1 mx-auto">
               <h3 className="text-center font-bold mt-2 mb-4">Recent Orders</h3>
-              {data.length > 0 ? (
+              {data.data.length > 0 ? (
                 <>
                   <table className="table-auto w-full ml-8">
                     <thead className="text-left">
@@ -124,8 +115,23 @@ function Account() {
                                   "AU"
                                 )}
                               </td>
-                              <td>{order.paymentStatus}</td>
+                              <td>
+                                {order.paymentStatus.charAt(0).toUpperCase() +
+                                  order.paymentStatus.slice(1)}
+                              </td>
                               <td>${order.total.orderTotal}</td>
+                              <td>
+                                <Link
+                                  to={`/account/order/${order.orderId}`}
+                                  state={{
+                                    order: order,
+                                  }}
+                                >
+                                  <p className="p-1 bg-indigo-500 rounded hover:cursor-pointer text-white text-center">
+                                    View
+                                  </p>
+                                </Link>
+                              </td>
                             </tr>
                           </>
                         )

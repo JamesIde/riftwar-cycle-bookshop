@@ -206,7 +206,6 @@ function Product() {
               <>{/* <p className="text-center">No reviews yet</p> */}</>
             )}
           </div>
-          {/* TODO Add terninary to check if User is logged in */}
           <div className="xl:pl-8 lg:pl-8 md:pl-8 p-2">
             {user ? (
               <>

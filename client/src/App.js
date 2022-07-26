@@ -11,6 +11,7 @@ import Success from "./Pages/Stripe/Success"
 import NotFound from "./Components/NotFound"
 import Account from "./Pages/Account"
 import Footer from "./Components/Footer"
+import Order from "./Components/Order"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
@@ -31,6 +32,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/checkout-success" element={<Success />} />
+            <Route path="/account/order/:id" element={<Order />} />
             <Route path="/not-found" element={<NotFound />} />
           </Routes>
           <Footer />

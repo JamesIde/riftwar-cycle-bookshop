@@ -8,23 +8,11 @@ function Account() {
 
   // Populate logged in  user
   const [userInfo, setUserInfo] = useState(user)
-  // Toggle edit user details
-  const [isDisabled, setisDisabled] = useState(true)
-  const [isHidden, setisHidden] = useState(true)
 
   // User detail manager
-  const [updateName, setUpdateName] = useState("")
-  const [updateEmail, setUpdateEmail] = useState("")
+  const [updateName, setUpdateName] = useState(user.name)
+  const [updateEmail, setUpdateEmail] = useState(user.email)
 
-  const enableEdit = e => {
-    e.preventDefault()
-    setisHidden(isHidden => !isHidden)
-    setisDisabled(isDisabled => !isDisabled)
-  }
-
-  //TODO User update their own phone data with a modal
-
-  // Fetch the order information
   const { loading, error, data } = useQuery("orders", async () => {
     const response = await axios.get("/api/orders", {
       headers: { Authorization: `Bearer ${user.token}` },
@@ -35,6 +23,18 @@ function Account() {
   if (error) {
     console.log(error)
     return error.message
+  }
+
+  // TODO Add handle submit for updating user details, slice, update page, etc.
+  const handleSubmit = e => {
+    e.preventDefault()
+    console.log("Hello")
+  }
+
+  const handleModalClose = e => {
+    e.preventDefault()
+    setUpdateEmail("")
+    setUpdateName("")
   }
 
   return (
@@ -62,8 +62,7 @@ function Account() {
                   type="text"
                   id="name"
                   value={userInfo.name}
-                  disabled={isDisabled}
-                  onChange={e => setUpdateName(e.target.value)}
+                  disabled
                   className="w-full px-2 py-2  border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                 />
               </div>
@@ -75,18 +74,66 @@ function Account() {
                   type="text"
                   id="email"
                   value={userInfo.email}
-                  disabled={isDisabled}
-                  onChange={e => setUpdateEmail(e.target.value)}
+                  disabled
                   className="w-full px-2 py-2  border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                 />
               </div>
-              <div className="flex flex-row justify-between mt-2">
-                <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded"
-                  hidden={isHidden}
+              <div className="text-right mt-5">
+                <label
+                  for="edit"
+                  className="p-2 bg-indigo-500 text-white rounded modal-button hover:cursor-pointer"
                 >
-                  Update
-                </button>
+                  Edit Details
+                </label>
+              </div>
+              {/* Edit Form Modal */}
+              <input type="checkbox" id="edit" class="modal-toggle" />
+              <div class="modal">
+                <div class="modal-box">
+                  <h3 className="text-center font-bold">
+                    Edit Personal Information
+                  </h3>
+                  <form onSubmit={handleSubmit}>
+                    <div>
+                      <label htmlFor="name" className="block py-2">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={updateName}
+                        onChange={e => setUpdateName(e.target.value)}
+                        className="w-full px-2 py-2  border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block py-2">
+                        Email
+                      </label>
+                      <input
+                        type="text"
+                        id="email"
+                        value={updateEmail}
+                        onChange={e => setUpdateEmail(e.target.value)}
+                        className="w-full px-2 py-2  border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+                      />
+                    </div>
+                    <div className="flex flex-row justify-between">
+                      <button
+                        type="submit"
+                        className="p-2 bg-indigo-500 rounded text-white mt-3 w-max h-max"
+                      >
+                        Update Details
+                      </button>
+                      <label
+                        for="edit"
+                        class="modal-action p-2 bg-gray-500 rounded text-white mt-3 w-max h-max hover:cursor-pointer"
+                      >
+                        Close
+                      </label>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
             <div className="w-full grid-cols-1 mx-auto">

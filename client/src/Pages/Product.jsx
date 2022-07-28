@@ -37,8 +37,6 @@ function Product() {
     dispatch(fetchAverageRating(slug))
   }, [dispatch])
 
-  // TODO Look into mongoose ordering and possible button clicks to filter the reviews by rating
-
   if (isLoading) {
     return <Spinner />
   }

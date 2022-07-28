@@ -19,7 +19,7 @@ function Login() {
   useEffect(() => {
     if (user) {
       navigate("/")
-      toast.success(`Welcome ${user.name}`)
+      toast.success(`Welcome, ${user.name}`)
     }
 
     if (isError) {

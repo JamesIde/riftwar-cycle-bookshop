@@ -1,11 +1,17 @@
 import { useQuery } from "react-query"
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Spinner from "../Components/Spinner"
+import { toast } from "react-toastify"
+import { logoutUser, updateUserDetails } from "../features/User/userSlice"
 function Account() {
   const user = JSON.parse(localStorage.getItem("user"))
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   // Populate logged in  user
   const [userInfo, setUserInfo] = useState(user)
 
@@ -25,16 +31,17 @@ function Account() {
     return error.message
   }
 
-  // TODO Add handle submit for updating user details, slice, update page, etc.
+  // TODO Account Page Table Responsiveness
   const handleSubmit = e => {
     e.preventDefault()
-    console.log("Hello")
-  }
-
-  const handleModalClose = e => {
-    e.preventDefault()
-    setUpdateEmail("")
-    setUpdateName("")
+    const formData = {
+      name: updateName,
+      email: updateEmail,
+    }
+    dispatch(updateUserDetails(formData))
+    dispatch(logoutUser())
+    navigate("/")
+    toast.success("User details updated")
   }
 
   return (
@@ -93,6 +100,9 @@ function Account() {
                   <h3 className="text-center font-bold">
                     Edit Personal Information
                   </h3>
+                  <p className="text-sm flex flex-col text-center">
+                    You will be logged out on details update.
+                  </p>
                   <form onSubmit={handleSubmit}>
                     <div>
                       <label htmlFor="name" className="block py-2">
@@ -125,6 +135,7 @@ function Account() {
                       >
                         Update Details
                       </button>
+
                       <label
                         for="edit"
                         class="modal-action p-2 bg-gray-500 rounded text-white mt-3 w-max h-max hover:cursor-pointer"

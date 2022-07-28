@@ -14,8 +14,18 @@ const register = async formData => {
 
   return response
 }
+
+const update = async (token, userData) => {
+  const response = await axios.put(API_URL + "/update", userData, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  return response
+}
+
 const userService = {
   login,
   register,
+  update,
 }
+
 export default userService

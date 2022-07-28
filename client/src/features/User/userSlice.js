@@ -47,6 +47,22 @@ export const logoutUser = createAsyncThunk("auth/logout", () => {
   // Get product cart
 })
 
+export const updateUserDetails = createAsyncThunk(
+  "user/updateUserDetails",
+  async (userData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().userReducer.user.token
+
+      const response = await userService.update(token, userData)
+      localStorage.setItem("user", JSON.stringify(response.data))
+
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.message)
+    }
+  }
+)
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -85,6 +101,24 @@ const userSlice = createSlice({
       state.message = "Login successful"
     })
     builder.addCase(registerUser.rejected, (state, action) => {
+      state.isLoading = false
+      state.isError = true
+      state.isSuccess = false
+      state.message = action.payload
+    })
+    builder.addCase(updateUserDetails.pending, state => {
+      state.isLoading = true
+      state.isError = false
+      state.isSuccess = false
+      state.message = ""
+    })
+    builder.addCase(updateUserDetails.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.isError = false
+      state.isSuccess = true
+      state.message = "User details updated. Thank you"
+    })
+    builder.addCase(updateUserDetails.rejected, (state, action) => {
       state.isLoading = false
       state.isError = true
       state.isSuccess = false

@@ -5,17 +5,11 @@ const Stripe = require("stripe")
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
 const createCheckout = asyncHandler(async (req, res) => {
-  const minifiedCart = req.body.cart.map(item => {
-    return {
-      productId: item.productId,
-    }
-  })
-
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.user._id.toString(),
       userName: req.user.name,
-      cart: JSON.stringify(minifiedCart),
+      cart: JSON.stringify(req.body.cart),
     },
   })
 
@@ -39,7 +33,7 @@ const createCheckout = asyncHandler(async (req, res) => {
             id: item.productId,
           },
         },
-        unit_amount: parseFloat((item.price * 100).toFixed(2)),
+        unit_amount: item.price * 100,
       },
       quantity: item.quantity,
       tax_rates: [taxRate.id],

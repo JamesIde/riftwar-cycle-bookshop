@@ -3,9 +3,9 @@ require("dotenv").config()
 const express = require("express")
 const app = express()
 const port = process.env.PORT
+const path = require("path")
 const colors = require("colors")
 const dbConnect = require("./db/dbConnect")
-const { urlencoded } = require("express")
 
 dbConnect()
 
@@ -28,9 +28,10 @@ app.use("/api/reviews", require("./routes/reviewRoutes"))
 
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
-  // Set build folder
+  // Set build folder as static
   app.use(express.static(path.join(__dirname, "../client/build")))
 
+  // Set any other routes to index.html
   app.get("*", (req, res) =>
     res.sendFile(__dirname, "../", "client", "build", "index.html")
   )

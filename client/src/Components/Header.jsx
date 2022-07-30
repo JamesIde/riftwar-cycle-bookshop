@@ -21,7 +21,7 @@ function Header() {
     <div class="navbar bg-base-100 xl:w-[51%] mx-auto">
       <div class="flex-1">
         <Link to="/">
-          <a class="normal-case text-xl">Crydee Bookstore</a>
+          <a class="normal-case text-xl">Riftwar Cycle Bookshop</a>
         </Link>
       </div>
       <div class="flex-none">

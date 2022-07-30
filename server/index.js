@@ -9,10 +9,6 @@ const dbConnect = require("./db/dbConnect")
 
 dbConnect()
 
-app.get("/", (req, res) => {
-  res.send("Hello and Welcome to the site")
-})
-
 app.use(
   express.urlencoded({
     extended: true,

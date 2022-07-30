@@ -3,6 +3,7 @@ const router = express.Router()
 const { createCheckout } = require("../controllers/stripeController")
 const { protect } = require("../middleware/authMiddleware")
 const Order = require("../models/orderModel")
+
 router.post("/create-checkout-session", protect, createCheckout)
 
 const Stripe = require("stripe")
@@ -77,7 +78,6 @@ router.post(
         })
         .catch(error => console.log(error))
     }
-
     // Return a 200 response to acknowledge receipt of the event
     response.send().end
   }

@@ -81,7 +81,7 @@ function Product() {
   return (
     <div className="xl:w-6/12 mx-auto">
       <div className="w-full bg-zinc-700">
-        <h1 className="p-4 text-left text-white text-xl font-bold uppercase leading-relaxed ">
+        <h1 className="p-4 text-left text-white text-xl font-bold uppercase leading-relaxed">
           {product.name}
         </h1>
       </div>

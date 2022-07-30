@@ -69,7 +69,6 @@ function Checkout() {
           price: item.price,
           quantity: item.quantity,
           productId: item._id,
-          imageUrl: item.image,
         }
       })
 

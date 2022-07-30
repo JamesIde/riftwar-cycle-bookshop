@@ -14,8 +14,7 @@ A website dedicated to the Riftwar Cycle novels published by Raymond E Feist. Th
 
 ## Features
 
-User authentication made possible with JSON web tokens, and Redux was used to manage the global state of the application, specifically the shopping cart. In some cases, A user can signin, signout, view their information and their orders. They also have the ability to leave reviews on products when logged in.
-The backend stores user credentials orders and handles tokens and data storage.
+User authentication with JSON web tokens. Redux was used to manage the global state of the application, specifically the shopping cart. A user can signin, signout, view their information and their orders. They also have the ability to leave reviews on products when logged in. The backend stores user credentials, orders and handles tokens and data storage.
 
 ## Get up and running
 

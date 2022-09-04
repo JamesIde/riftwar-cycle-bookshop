@@ -67,7 +67,7 @@ function Account() {
             </p>
           </div>
 
-          <div className="grid xl:grid-cols-2 md:grid-cols-1 grid-cols-1 xl:w-6/12 lg:w-6/12 md:w-5/12 w-7/12 mx-auto">
+          <div className="grid xl:grid-cols-2 md:grid-cols-1 grid-cols-1 xl:w-6/12 lg:w-6/12 md:w-5/12 w-full mx-auto border-2 p-2">
             <div className="grid-cols-1 w-full">
               <h3 className="text-center font-bold">Personal Information</h3>
               <div>
@@ -160,7 +160,7 @@ function Account() {
               <h3 className="text-center font-bold mt-2 mb-4">Recent Orders</h3>
               {data.data.length > 0 ? (
                 <>
-                  <table className="table-auto w-full ml-8">
+                  <table className="table-auto w-full border-2 mx-auto">
                     <thead className="text-left">
                       <tr className="w-max">
                         <th>Order</th>
@@ -175,7 +175,7 @@ function Account() {
                         return (
                           <>
                             <tr>
-                              <td>#{order.orderId.slice(0, 17)}</td>
+                              <td>#{order.orderId.slice(0, 11)}</td>
 
                               <td>
                                 {new Date(order.createdAt).toLocaleDateString(

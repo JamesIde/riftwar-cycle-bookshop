@@ -6,7 +6,7 @@ function ProductItem({ product }) {
         <img
           src={product.image}
           alt={product.title}
-          className=" mx-auto xl:w-[400px] lg:w-[350px] md:w-[250px] w-[250px]"
+          className=" mx-auto xl:w-[400px] lg:w-[350px] md:w-[250px] w-[325px]"
         />
       </div>
       <div className="border-l border-r border-b">

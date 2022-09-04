@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import { API } from "../../helper/API"
 
-const API_URL = "/api/orders"
-const STRIPE_API_URL = "/api/stripe"
 const initialState = {
   order: {},
   isLoading: false,
@@ -62,8 +60,8 @@ export const createOrder = createAsyncThunk(
   async (orderData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().userReducer.user.token
-      const response = await axios.post(
-        `${STRIPE_API_URL}/create-checkout-session`,
+      const response = await API.post(
+        `/api/stripe/create-checkout-session`,
         orderData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -93,7 +91,7 @@ export const getOrder = createAsyncThunk(
     const token = thunkAPI.getState().userReducer.user.token
 
     try {
-      const response = await axios.get(`${API_URL}/${orderId}`, {
+      const response = await API.get(`/api/orders/${orderId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       return response.data

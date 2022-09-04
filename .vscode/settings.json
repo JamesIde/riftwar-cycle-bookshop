@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/e3c8ffa9-5047-4fb5-9315-87709f13368b/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/riftwar-cycle-backend",
+    "appService.deploySubpath": "."
+}

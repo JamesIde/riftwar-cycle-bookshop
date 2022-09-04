@@ -1,5 +1,5 @@
+import { API } from "../../helper/API"
 const { createAsyncThunk, createSlice } = require("@reduxjs/toolkit")
-const axios = require("axios")
 
 const initialState = {
   reviews: [],
@@ -14,7 +14,7 @@ export const fetchProductReviews = createAsyncThunk(
   "item/getProductReviews",
   async (slug, thunkAPI) => {
     try {
-      const response = await axios.get("/api/reviews/", { params: { slug } })
+      const response = await API.get("/api/reviews/", { params: { slug } })
       return response.data
     } catch (error) {
       thunkAPI.rejectWithValue(error.message)
@@ -26,7 +26,7 @@ export const fetchAverageRating = createAsyncThunk(
   "item/getAverageRating",
   async (slug, thunkAPI) => {
     try {
-      const response = await axios.get("/api/reviews/rating", {
+      const response = await API.get("/api/reviews/rating", {
         params: { slug },
       })
       return response.data
@@ -44,7 +44,7 @@ export const createReview = createAsyncThunk(
 
     try {
       const token = thunkAPI.getState().userReducer.user.token
-      const response = await axios.post(
+      const response = await API.post(
         "/api/reviews/",
         {
           reviewDesc,

@@ -6,7 +6,7 @@ const port = process.env.PORT
 const path = require("path")
 const colors = require("colors")
 const dbConnect = require("./db/dbConnect")
-
+const cors = require("cors")
 dbConnect()
 
 app.use(
@@ -14,7 +14,11 @@ app.use(
     extended: true,
   })
 )
-
+app.use(
+  cors({
+    origin: "*",
+  })
+)
 app.use(express.json())
 app.use("/api/user", require("./routes/userRoutes"))
 app.use("/api/products", require("./routes/productRoutes"))

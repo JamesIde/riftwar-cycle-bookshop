@@ -1,17 +1,21 @@
+import { API } from "../../helper/API"
 import Spinner from "../../Components/Spinner"
 import axios from "axios"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { clearCart } from "../../features/Products/productSlice"
 function Success() {
   const API_URL = "/api/orders"
-
+  const dispatch = useDispatch()
   const user = JSON.parse(localStorage.getItem("user"))
 
   const { isLoading, error, data } = useQuery("order", async () => {
     const orderId = localStorage.getItem("orderId")
 
     localStorage.removeItem("cart")
-    const response = await axios.get(`${API_URL}/${orderId}`, {
+    dispatch(clearCart())
+    const response = await API.get(`/api/orders/${orderId}`, {
       headers: { Authorization: `Bearer ${user.token}` },
     })
 

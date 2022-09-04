@@ -1,7 +1,5 @@
+import { API } from "../../helper/API"
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
-const axios = require("axios")
-
-const API_URL = "/api/products"
 
 const cartFromLocalStorage = JSON.parse(localStorage.getItem("cart"))
 
@@ -139,7 +137,7 @@ export const fetchProducts = createAsyncThunk(
   "item/getProducts",
   async thunkAPI => {
     try {
-      const response = await axios.get(API_URL)
+      const response = await API.get("/api/products")
 
       return response.data
     } catch (error) {
@@ -152,7 +150,7 @@ export const fetchProduct = createAsyncThunk(
   "item/getProduct",
   async (slug, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_URL}/${slug}`)
+      const response = await API.get(`/api/products/${slug}`)
       return response.data
     } catch (error) {
       thunkAPI.rejectWithValue(error.message)

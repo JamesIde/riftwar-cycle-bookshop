@@ -7,6 +7,7 @@ import axios from "axios"
 import Spinner from "../Components/Spinner"
 import { toast } from "react-toastify"
 import { logoutUser, updateUserDetails } from "../features/User/userSlice"
+import { API } from "../helper/API"
 function Account() {
   const user = JSON.parse(localStorage.getItem("user"))
 
@@ -20,7 +21,7 @@ function Account() {
   const [updateEmail, setUpdateEmail] = useState(user.email)
 
   const { loading, error, data } = useQuery("orders", async () => {
-    const response = await axios.get("/api/orders", {
+    const response = await API.get("/api/orders", {
       headers: { Authorization: `Bearer ${user.token}` },
     })
     return response.data
@@ -46,7 +47,15 @@ function Account() {
 
   return (
     <>
-      <div className="w-6/12 mx-auto">{loading ? <Spinner /> : null}</div>
+      <div className="w-6/12 mx-auto">
+        {loading ? (
+          <div className="w-6/12 mx-auto text-center">
+            <Spinner />
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
       {data ? (
         <>
           <div className="xl:w-6/12 mx-auto  text-center">
@@ -211,7 +220,10 @@ function Account() {
           </div>
         </>
       ) : (
-        <p> Loading</p>
+        <div className="text-center mx-auto w-3/4">
+          {" "}
+          <Spinner />
+        </div>
       )}
     </>
   )

@@ -1,5 +1,6 @@
 # The Riftwar Cycle Bookshop
 
+View it [here](https://riftwar-cycle-bookstore.netlify.app/).
 A website dedicated to the Riftwar Cycle novels published by Raymond E Feist. The website allows users to purchase copies of the books and leave reviews on them.
 
 ## Technology Used

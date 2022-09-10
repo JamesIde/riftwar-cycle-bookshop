@@ -92,8 +92,8 @@ const createCheckout = asyncHandler(async (req, res) => {
     line_items,
     mode: "payment",
 
-    success_url: `${process.env.CLIENT_URL}/checkout-success`,
-    cancel_url: `${process.env.CLIENT_URL}/checkout`,
+    success_url: `https://riftwar-cycle-bookstore.netlify.app/checkout-success`,
+    cancel_url: `https://riftwar-cycle-bookstore.netlify.app/checkout`,
   })
 
   res.send({ url: session.url, sessionId: session.id })

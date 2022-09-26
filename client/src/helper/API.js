@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const API = axios.create({
-  baseURL: "https://riftwar-cycle-backend.azurewebsites.net",
+  baseURL: "FIX THIS",
   headers: {
     "Access-Control-Allow-Origin": "*",
   },
